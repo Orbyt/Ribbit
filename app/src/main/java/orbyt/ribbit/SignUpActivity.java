@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -29,6 +30,7 @@ public class SignUpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_sign_up);
 
         ButterKnife.bind(this);
@@ -51,6 +53,9 @@ public class SignUpActivity extends ActionBarActivity {
                     dialog.show();
                 } else {
                     //create a new user
+                    //turn on progress bar
+                    setProgressBarIndeterminateVisibility(true);
+
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(username);
                     newUser.setPassword(password);
@@ -59,6 +64,8 @@ public class SignUpActivity extends ActionBarActivity {
                         @Override
                         public void done(ParseException e) {
                             //If the callback is successful, take user to their inbox
+                            //turn off progress bar
+                            setProgressBarIndeterminateVisibility(false);
                             if (e == null) {
                                 Intent intent = new Intent(SignUpActivity.this, TabbedActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

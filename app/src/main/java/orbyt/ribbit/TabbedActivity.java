@@ -9,16 +9,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseUser;
+
 import java.util.Locale;
 
 
 public class TabbedActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+    public static final String TAG = TabbedActivity.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -40,10 +45,15 @@ public class TabbedActivity extends ActionBarActivity implements ActionBar.TabLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            navigateToLogin();
+        } else {
+            Log.i(TAG, currentUser.getUsername());
+        }
+
+
+
 
 
 
@@ -82,6 +92,13 @@ public class TabbedActivity extends ActionBarActivity implements ActionBar.TabLi
         }
     }
 
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,8 +115,9 @@ public class TabbedActivity extends ActionBarActivity implements ActionBar.TabLi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_loguout) {
+            ParseUser.logOut();
+            navigateToLogin();
         }
 
         return super.onOptionsItemSelected(item);

@@ -18,5 +18,8 @@
     <string name="sign_up_button_label">Sign Up</string>
     <string name="sign_up_error_message">Your missing either a username, password, or email address.</string>
     <string name="sign_up_error_title">Oops!</string>
+    <string name="login_error_message">Enter a username and password.</string>
+    <string name="login_error_title">Oops!</string>
+    <string name="menu_logout_label">Log out</string>
 
 </resources>
